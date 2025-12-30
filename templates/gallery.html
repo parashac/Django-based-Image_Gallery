@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Gallery{% endblock %}
+
+{% block content %}
+
+<style>
+.gallery-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.gallery-card {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.gallery-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover; /* IMPORTANT */
+    display: block;
+}
+
+.gallery-card .info {
+    padding: 10px;
+    text-align: center;
+}
+
+.gallery-card .info h4 {
+    margin: 5px 0;
+    font-size: 16px;
+}
+</style>
+
+<h2 style="text-align:center;">Image Gallery</h2>
+
+<div class="gallery-container">
+    {% for img in images %}
+        <div class="gallery-card">
+            <img src="{{ img.image.url }}" alt="{{ img.title }}">
+            <div class="info">
+                <h4>{{ img.title }}</h4>
+            </div>
+        </div>
+    {% empty %}
+        <p>No images uploaded.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}
