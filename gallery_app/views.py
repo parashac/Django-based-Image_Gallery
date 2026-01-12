@@ -15,3 +15,14 @@ def upload_image(request):
             return redirect('gallery')
 
     return render(request, 'upload.html')
+from django.shortcuts import redirect
+from .models import Image
+
+def delete_image(request, id):
+    image = Image.objects.filter(id=id)
+
+    if request.method == "POST":
+        image.delete()
+        return redirect("gallery")
+
+    return redirect("gallery")

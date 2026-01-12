@@ -1,7 +1,5 @@
 {% extends "base.html" %}
 
-{% block title %}Gallery{% endblock %}
-
 {% block content %}
 
 <style>
@@ -17,39 +15,74 @@
     border-radius: 6px;
     overflow: hidden;
     background: #fff;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
 .gallery-card img {
     width: 100%;
     height: 200px;
-    object-fit: cover; /* IMPORTANT */
-    display: block;
+    object-fit: cover;
 }
 
-.gallery-card .info {
+.gallery-info {
     padding: 10px;
     text-align: center;
 }
 
-.gallery-card .info h4 {
-    margin: 5px 0;
-    font-size: 16px;
+.delete-btn {
+    margin-top: 6px;
+    padding: 6px 12px;
+    background: #c0392b;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    background: #a93226;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+.add-btn {
+    padding: 8px 14px;
+    background: #333;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
 }
 </style>
 
-<h2 style="text-align:center;">Image Gallery</h2>
+<div class="top-bar">
+    <h2>Image Gallery</h2>
+    <a href="{% url 'upload_image' %}" class="add-btn">+ Add Image</a>
+</div>
 
 <div class="gallery-container">
     {% for img in images %}
         <div class="gallery-card">
             <img src="{{ img.image.url }}" alt="{{ img.title }}">
-            <div class="info">
-                <h4>{{ img.title }}</h4>
+
+            <div class="gallery-info">
+                <strong>{{ img.title }}</strong>
+
+                <form action="{% url 'delete_image' img.id %}"
+                      method="POST"
+                      onsubmit="return confirm('Delete this image?');">
+                    {% csrf_token %}
+                    <button type="submit" class="delete-btn">Delete</button>
+                </form>
             </div>
         </div>
     {% empty %}
-        <p>No images uploaded.</p>
+        <p style="padding:20px;">No images uploaded yet.</p>
     {% endfor %}
 </div>
 
